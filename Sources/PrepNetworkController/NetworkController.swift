@@ -5,14 +5,19 @@ import PrepUnits
 
 public class NetworkController {
     
-    let isLocal = true
+    let isLocal: Bool
+    
+    init(isLocal: Bool) {
+        self.isLocal = isLocal
+    }
     
     var baseUrlString: String {
         isLocal ? "http://127.0.0.1:8083" : "https://pxlshpr.app/prep"
     }
     
-    public static var shared = NetworkController()
-    
+    public static var local = NetworkController(isLocal: true)
+    public static var server = NetworkController(isLocal: false)
+
     public func postRequest(for serverFoodForm: ServerFoodForm) -> URLRequest? {
         guard let url = URL(string: "\(baseUrlString)/foods") else { return nil }
         
