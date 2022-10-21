@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import SwiftSugar
+import PrepUnits
 
 public class NetworkController {
     
@@ -13,9 +14,7 @@ public class NetworkController {
     public static var shared = NetworkController()
     
     public func postRequest(for serverFoodForm: ServerFoodForm) -> URLRequest? {
-        guard let url = URL(string: "\(baseUrlString)/foods") else {
-            return nil
-        }
+        guard let url = URL(string: "\(baseUrlString)/foods") else { return nil }
         
         do {
             let encoder = JSONEncoder()
@@ -66,8 +65,13 @@ public class NetworkController {
     }
     
     public func searchFoods(with string: String, page: Int = 1) async throws -> FoodSearchResponse {
-        try await sleepTask(2)
-        return FoodSearchResponse(results: [], page: page, hasMorePages: page < 5)
+        guard let url = URL(string: "\(baseUrlString)/foods") else {
+            throw NetworkControllerError.badUrl
+        }
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let decoder = JSONDecoder()
+        return try decoder.decode(FoodSearchResponse.self, from: data)
     }
 }
 
