@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import SwiftSugar
 
 public class NetworkController {
     
@@ -15,11 +16,11 @@ public class NetworkController {
         guard let url = URL(string: "\(baseUrlString)/foods") else {
             return nil
         }
-
+        
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(serverFoodForm)
-
+            
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = data
@@ -32,38 +33,45 @@ public class NetworkController {
             return nil
         }
     }
-
+    
     public func postRequest(forImageData imageData: Data, imageId: UUID) -> URLRequest? {
         return postRequest(forImageData: imageData, imageId: imageId)
     }
     
     public func postRequest(forImageData imageData: Data, imageId: UUID) -> URLRequest {
         let boundary = "Boundary-\(UUID().uuidString)"
-
+        
         var request = URLRequest(url: URL(string: "\(baseUrlString)/foods/image")!)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         let httpBody = NSMutableData()
-
+        
         let formFields = ["id": imageId.uuidString]
-
+        
         for (key, value) in formFields {
             httpBody.appendString(convertFormField(named: key, value: value, using: boundary))
         }
-
+        
         httpBody.append(convertFileData(fieldName: "data",
                                         fileName: "\(imageId.uuidString).jpg",
                                         mimeType: "image/jpg",
                                         fileData: imageData,
                                         using: boundary))
-
+        
         httpBody.appendString("--\(boundary)--")
-
+        
         request.httpBody = httpBody as Data
         return request
     }
     
+    public func searchFoods(with string: String, page: Int = 1) async throws -> FoodSearchResponse {
+        try await sleepTask(2)
+        return FoodSearchResponse(results: [], page: page, hasMorePages: page < 5)
+    }
+}
+
+extension NetworkController {
     func convertFormField(named name: String, value: String, using boundary: String) -> String {
         var fieldString = "--\(boundary)\r\n"
         fieldString += "Content-Disposition: form-data; name=\"\(name)\"\r\n"
