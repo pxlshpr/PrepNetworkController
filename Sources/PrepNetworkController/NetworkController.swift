@@ -38,10 +38,6 @@ public class NetworkController {
         }
     }
     
-    public func postRequest(forImageData imageData: Data, imageId: UUID) -> URLRequest? {
-        return postRequest(forImageData: imageData, imageId: imageId)
-    }
-    
     public func postRequest(forImageData imageData: Data, imageId: UUID) -> URLRequest {
         let boundary = "Boundary-\(UUID().uuidString)"
         
