@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "prepunits",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pxlshpr/PrepUnits",
+      "state" : {
+        "revision" : "37e68aa934929523bf11e42bde8592bba320b78f",
+        "version" : "0.0.91"
+      }
+    },
+    {
+      "identity" : "swiftsugar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pxlshpr/SwiftSugar",
+      "state" : {
+        "revision" : "367629613def1bb61e378e402082559eeaf2a7c6",
+        "version" : "0.0.67"
+      }
+    }
+  ],
+  "version" : 2
+}
