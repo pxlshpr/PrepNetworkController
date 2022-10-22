@@ -65,15 +65,31 @@ public class NetworkController {
         return request
     }
     
-    public func searchFoods(with string: String, page: Int = 1) async throws -> FoodSearchResponse {
-        guard let url = URL(string: "\(baseUrlString)/foods") else {
+    public func searchFoods(with string: String, page: Int = 1, per: Int = 25) async throws -> FoodsPage {
+        let urlString = "\(baseUrlString)/foods/?page=\(page)&per=\(per)"
+        guard let url = URL(string: urlString) else {
             throw NetworkControllerError.badUrl
         }
-
+        
         let (data, _) = try await URLSession.shared.data(from: url)
         let decoder = JSONDecoder()
-        return try decoder.decode(FoodSearchResponse.self, from: data)
+        return try decoder.decode(FoodsPage.self, from: data)
     }
+}
+
+public struct PageMetadata: Codable {
+    public let page: Int
+    public let per: Int
+    public let total: Int
+    
+    var hasMorePages: Bool {
+        total > page * per
+    }
+}
+
+public struct FoodsPage: Codable {
+    public let items: [FoodSearchResult]
+    public let metadata: PageMetadata
 }
 
 extension NetworkController {
