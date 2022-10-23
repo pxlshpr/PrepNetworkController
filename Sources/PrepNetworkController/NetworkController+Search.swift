@@ -3,21 +3,26 @@ import PrepUnits
 
 extension NetworkController {
     
-    public func searchFoods(params: ServerFoodSearchParams) async throws -> FoodsPage {
-        let urlString = params.url(baseUrlString)
-        guard let url = URL(string: urlString) else {
+    func searchRequest(for params: ServerFoodSearchParams) throws -> URLRequest {
+        guard let url = URL(string: "\(baseUrlString)/foods/search") else {
             throw NetworkControllerError.badUrl
         }
         
-        let (data, _) = try await URLSession.shared.data(from: url)
-        let decoder = JSONDecoder()
-        return try decoder.decode(FoodsPage.self, from: data)
+        var request = URLRequest(url: url)
+
+        let encoder = JSONEncoder()
+        let jsonData = try! encoder.encode(params)
+
+        request.httpMethod = "POST"
+        request.addValue("application/json",forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        return request
     }
     
-}
-
-extension ServerFoodSearchParams {
-    func url(_ baseUrlString: String) -> String {
-        "\(baseUrlString)/foods/search?string=\(string)&page=\(page)&per=\(per)"
+    public func searchFoods(params: ServerFoodSearchParams) async throws -> FoodsPage {
+        let request = try searchRequest(for: params)
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let decoder = JSONDecoder()
+        return try decoder.decode(FoodsPage.self, from: data)
     }
 }
