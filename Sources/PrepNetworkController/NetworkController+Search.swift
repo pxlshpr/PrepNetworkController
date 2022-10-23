@@ -14,7 +14,8 @@ extension NetworkController {
         let jsonData = try! encoder.encode(params)
 
         request.httpMethod = "POST"
-        request.addValue("application/json",forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json",forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = jsonData
         return request
     }
