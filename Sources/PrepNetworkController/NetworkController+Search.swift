@@ -18,6 +18,6 @@ extension NetworkController {
 
 extension ServerFoodSearchParams {
     func url(_ baseUrlString: String) -> String {
-        "\(baseUrlString)/foods/search?searchText=\(string)&page=\(page)&per=\(per)"
+        "\(baseUrlString)/foods/search?string=\(string)&page=\(page)&per=\(per)"
     }
 }
