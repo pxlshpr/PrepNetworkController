@@ -3,8 +3,8 @@ import PrepUnits
 
 extension NetworkController {
     
-    public func searchFoods(with string: String, page: Int = 1, per: Int = 25) async throws -> FoodsPage {
-        let urlString = "\(baseUrlString)/foods/?searchText=\(string)&page=\(page)&per=\(per)"
+    public func searchFoods(params: ServerFoodSearchParams) async throws -> FoodsPage {
+        let urlString = params.url(baseUrlString)
         guard let url = URL(string: urlString) else {
             throw NetworkControllerError.badUrl
         }
@@ -13,5 +13,11 @@ extension NetworkController {
         let decoder = JSONDecoder()
         return try decoder.decode(FoodsPage.self, from: data)
     }
+    
+}
 
+extension ServerFoodSearchParams {
+    func url(_ baseUrlString: String) -> String {
+        "\(baseUrlString)/foods/?searchText=\(string)&page=\(page)&per=\(per)"
+    }
 }
