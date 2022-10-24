@@ -1,7 +1,7 @@
 import Foundation
 import PrepUnits
 
-extension NetworkController {
+public extension NetworkController {
     func foods(for results: [FoodSearchResult]) async throws -> [PrepFood] {
         let ids = results.map { $0.id }
         
