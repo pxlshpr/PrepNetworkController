@@ -11,6 +11,7 @@ extension NetworkController {
         let (data, _) = try await URLSession.shared.data(for: request)
         let decoder = JSONDecoder()
         let serverFoods = try decoder.decode(ServerFood.self, from: data)
+        
         return []
     }
 }
