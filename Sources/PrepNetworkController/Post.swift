@@ -18,4 +18,4 @@ extension NetworkController {
         request.httpBody = jsonData
         return request
     }
-}
+}  

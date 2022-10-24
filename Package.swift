@@ -15,7 +15,7 @@ let package = Package(
             targets: ["PrepNetworkController"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pxlshpr/PrepUnits", from: "0.0.131"),
+        .package(url: "https://github.com/pxlshpr/PrepUnits", from: "0.0.135"),
         .package(url: "https://github.com/pxlshpr/SwiftSugar", from: "0.0.69"),
     ],
     targets: [
