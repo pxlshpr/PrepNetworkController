@@ -12,6 +12,8 @@ public extension NetworkController {
         let decoder = JSONDecoder()
         let serverFoods = try decoder.decode([ServerFood].self, from: data)
         
-        return []
+        return serverFoods.compactMap {
+            PrepFood(serverFood: $0)
+        }
     }
 }
