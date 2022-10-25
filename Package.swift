@@ -15,8 +15,8 @@ let package = Package(
             targets: ["PrepNetworkController"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pxlshpr/PrepUnits", from: "0.0.135"),
-        .package(url: "https://github.com/pxlshpr/SwiftSugar", from: "0.0.69"),
+        .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.9"),
+        .package(url: "https://github.com/pxlshpr/SwiftSugar", from: "0.0.74"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "PrepNetworkController",
             dependencies: [
-                .product(name: "PrepUnits", package: "prepunits"),
+                .product(name: "PrepDataTypes", package: "prepdatatypes"),
                 .product(name: "SwiftSugar", package: "swiftsugar"),
             ]),
         .testTarget(
